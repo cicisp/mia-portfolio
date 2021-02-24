@@ -1,0 +1,10 @@
+{
+  "development": {
+    "apiUrl": "https://ghost.critically-mia.me",
+    "contentApiKey": "a700141b95c14b1022cb4eb7fa"
+  },
+  "production": {
+    "apiUrl": "https://ghost.critically-mia.me",
+    "contentApiKey": "a700141b95c14b1022cb4eb7fa"
+  }
+}
