@@ -60,12 +60,12 @@ module.exports = {
         `gatsby-plugin-sharp`,
         `gatsby-transformer-sharp`,
         {
-            resolve: `gatsby-source-ghost`,
-            options:
-                process.env.NODE_ENV === `development`
-                    ? ghostConfig.development
-                    : ghostConfig.production,
-        },
+            resolve: 'gatsby-source-ghost',
+            options: {
+              apiUrl: 'http://ghost.critically-mia.me',
+              contentApiKey: 'a700141b95c14b1022cb4eb7fa',
+            },
+          },
         /**
          *  Utility Plugins
          */
