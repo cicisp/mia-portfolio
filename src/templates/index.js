@@ -1,115 +1,130 @@
 import React from 'react'
-import Layout from '../components/layout'
+import PropTypes from 'prop-types'
+import { graphql } from 'gatsby'
 
-import Header from '../components/Header'
-import Main from '../components/Main'
-import Footer from '../components/Footer'
+import { Layout, PostCard, Pagination } from '../components/common'
+import { MetaData } from '../components/common/meta'
 
-class IndexPage extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isArticleVisible: false,
-      timeout: false,
-      articleTimeout: false,
-      article: '',
-      loading: 'is-loading'
-    }
-    this.handleOpenArticle = this.handleOpenArticle.bind(this)
-    this.handleCloseArticle = this.handleCloseArticle.bind(this)
-    this.setWrapperRef = this.setWrapperRef.bind(this);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
-  }
+/**
+* Main index page (home page)
+*
+* Loads all posts from Ghost and uses pagination to navigate through them.
+* The number of posts that should appear per page can be setup
+* in /utils/siteConfig.js under `postsPerPage`.
+*
+*/
+const Index = ({ data, location, pageContext }) => {
+    const posts = data.allGhostPost.edges
 
-  componentDidMount () {
-    this.timeoutId = setTimeout(() => {
-        this.setState({loading: ''});
-    }, 100);
-    document.addEventListener('mousedown', this.handleClickOutside);
-  }
+    return (
+        <>
+            <MetaData location={location} />
+            <Layout isHome={true}>
+                <div className="container">
+                    <section className="post-feed">
+                        {posts.map(({ node }) => (
+                            // The tag below includes the markup for each post - components/common/PostCard.js
+                            <PostCard key={node.id} post={node} />
+                        ))}
+                    </section>
+                    <Pagination pageContext={pageContext} />
+                </div>
+            </Layout>
+        </>
+    )
+}
 
-  componentWillUnmount () {
-    if (this.timeoutId) {
-        clearTimeout(this.timeoutId);
-    }
-    document.removeEventListener('mousedown', this.handleClickOutside);
-  }
+Index.propTypes = {
+    data: PropTypes.shape({
+        allGhostPost: PropTypes.object.isRequired,
+    }).isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    }).isRequired,
+    pageContext: PropTypes.object,
+}
 
-  setWrapperRef(node) {
-    this.wrapperRef = node;
-  }
+export default Index
 
-  handleOpenArticle(article) {
-
-    this.setState({
-      isArticleVisible: !this.state.isArticleVisible,
-      article
-    })
-
-    setTimeout(() => {
-      this.setState({
-        timeout: !this.state.timeout
-      })
-    }, 325)
-
-    setTimeout(() => {
-      this.setState({
-        articleTimeout: !this.state.articleTimeout
-      })
-    }, 350)
-
-  }
-
-  handleCloseArticle() {
-
-    this.setState({
-      articleTimeout: !this.state.articleTimeout
-    })
-
-    setTimeout(() => {
-      this.setState({
-        timeout: !this.state.timeout
-      })
-    }, 325)
-
-    setTimeout(() => {
-      this.setState({
-        isArticleVisible: !this.state.isArticleVisible,
-        article: ''
-      })
-    }, 350)
-
-  }
-
-  handleClickOutside(event) {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      if (this.state.isArticleVisible) {
-        this.handleCloseArticle();
+// This page query loads all posts sorted descending by published date
+// The `limit` and `skip` values are used for pagination
+export const pageQuery = graphql`
+  query GhostPostQuery($limit: Int!, $skip: Int!) {
+    allGhostPost(
+        sort: { order: DESC, fields: [published_at] },
+        limit: $limit,
+        skip: $skip
+    ) {
+      edges {
+        node {
+          ...GhostPostFields
+        }
       }
     }
   }
+`
+import React from 'react'
+import PropTypes from 'prop-types'
+import { graphql } from 'gatsby'
 
-  render() {
+import { Layout, PostCard, Pagination } from '../components/common'
+import { MetaData } from '../components/common/meta'
+
+/**
+* Main index page (home page)
+*
+* Loads all posts from Ghost and uses pagination to navigate through them.
+* The number of posts that should appear per page can be setup
+* in /utils/siteConfig.js under `postsPerPage`.
+*
+*/
+const Index = ({ data, location, pageContext }) => {
+    const posts = data.allGhostPost.edges
+
     return (
-      <Layout location={this.props.location}>
-        <div className={`body ${this.state.loading} ${this.state.isArticleVisible ? 'is-article-visible' : ''}`}>
-          <div id="wrapper">
-            <Header onOpenArticle={this.handleOpenArticle} timeout={this.state.timeout} />
-            <Main
-              isArticleVisible={this.state.isArticleVisible}
-              timeout={this.state.timeout}
-              articleTimeout={this.state.articleTimeout}
-              article={this.state.article}
-              onCloseArticle={this.handleCloseArticle}
-              setWrapperRef={this.setWrapperRef}
-            />
-            <Footer timeout={this.state.timeout} />
-          </div>
-          <div id="bg"></div>
-        </div>
-      </Layout>
+        <>
+            <MetaData location={location} />
+            <Layout isHome={true}>
+                <div className="container">
+                    <section className="post-feed">
+                        {posts.map(({ node }) => (
+                            // The tag below includes the markup for each post - components/common/PostCard.js
+                            <PostCard key={node.id} post={node} />
+                        ))}
+                    </section>
+                    <Pagination pageContext={pageContext} />
+                </div>
+            </Layout>
+        </>
     )
-  }
 }
 
-export default IndexPage
+Index.propTypes = {
+    data: PropTypes.shape({
+        allGhostPost: PropTypes.object.isRequired,
+    }).isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    }).isRequired,
+    pageContext: PropTypes.object,
+}
+
+export default Index
+
+// This page query loads all posts sorted descending by published date
+// The `limit` and `skip` values are used for pagination
+export const pageQuery = graphql`
+  query GhostPostQuery($limit: Int!, $skip: Int!) {
+    allGhostPost(
+        sort: { order: DESC, fields: [published_at] },
+        limit: $limit,
+        skip: $skip
+    ) {
+      edges {
+        node {
+          ...GhostPostFields
+        }
+      }
+    }
+  }
+`
