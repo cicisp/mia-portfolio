@@ -4,9 +4,3 @@
 
 [template]
   incoming-hooks = ["Ghost"]
-
-[[redirects]]
-  from = "https://critically-mia.netlify.app"
-  to = "https://ghost.critically-mia.me"
-  status = 301
-  force = true
