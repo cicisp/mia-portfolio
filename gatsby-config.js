@@ -190,6 +190,7 @@ module.exports = {
         `gatsby-plugin-force-trailing-slashes`,
         `gatsby-plugin-offline`,
 	`gatsby-plugin-sass`,
+    `gatsby-plugin-dark-mode`,
     ],
 }
 
