@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image'
+import { ThemeToggler } from 'gatsby-plugin-dark-mode'
 
 import { Navigation } from '.'
 import config from '../../utils/siteConfig'
@@ -65,6 +66,7 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
                                 </div>
                                 <div className="site-nav-right">
                                     <Link className="site-nav-button" to="/about">About</Link>
+                                    
                                 </div>
                             </nav>
                         </div>
@@ -132,3 +134,22 @@ const DefaultLayoutSettingsQuery = props => (
 )
 
 export default DefaultLayoutSettingsQuery
+
+class MyComponent extends React.Component {
+    render() {
+      return (
+        <ThemeToggler>
+          {({ theme, toggleTheme }) => (
+            <label>
+              <input
+                type="checkbox"
+                onChange={e => toggleTheme(e.target.checked ? 'dark' : 'light')}
+                checked={theme === 'dark'}
+              />{' '}
+              Dark mode
+            </label>
+          )}
+        </ThemeToggler>
+      )
+    }
+  }
