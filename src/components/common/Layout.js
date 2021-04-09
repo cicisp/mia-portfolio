@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image'
-import { ThemeToggler } from 'gatsby-plugin-dark-mode'
-
 import { Navigation } from '.'
-import config from '../../utils/siteConfig'
-
+import config, { themeColor } from '../../utils/siteConfig'
+import { ThemeToggler } from 'gatsby-plugin-dark-mode' 
 // Styles
 import '../../styles/app.css'
 
@@ -23,7 +21,23 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
     const site = data.allGhostSettings.edges[0].node
     const twitterUrl = site.twitter ? `https://twitter.com/${site.twitter.replace(/^@/, ``)}` : null
     const facebookUrl = site.facebook ? `https://www.facebook.com/${site.facebook.replace(/^\//, ``)}` : null
-
+    class Layout extends React.Component {
+        render() {
+          return (
+            <div
+              style={{
+                backgroundColor: 'var(--bg)',
+                color: 'var(--textNormal)',
+                transition: 'color 0.2s ease-out, background 0.2s ease-out',
+              }}
+            >
+              ...
+            </div>
+          )
+        }
+      }
+    
+    
     return (
         <>
             <Helmet>
@@ -50,6 +64,7 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
                                 <div className="site-mast-right">
                                     { site.twitter && <a href={ twitterUrl } className="site-nav-item" target="_blank" rel="noopener noreferrer"><img className="site-nav-icon" src="/images/icons/twitter.svg" alt="Twitter" /></a>}
                                     { site.facebook && <a href={ facebookUrl } className="site-nav-item" target="_blank" rel="noopener noreferrer"><img className="site-nav-icon" src="/images/icons/facebook.svg" alt="Facebook" /></a>}
+                                    <a className="site-nav-item" target="_blank" rel="noopener noreferrer"><img className="site-nav-icon" src="/images/icons/dark.svg" alt="Night" /></a> 
                                     <a className="site-nav-item" href={ `https://feedly.com/i/subscription/feed/${config.siteUrl}/rss/` } target="_blank" rel="noopener noreferrer"><img className="site-nav-icon" src="/images/icons/rss.svg" alt="RSS Feed" /></a>
                                 </div>
                             </div>
@@ -66,7 +81,7 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
                                 </div>
                                 <div className="site-nav-right">
                                     <Link className="site-nav-button" to="/about">About</Link>
-                                    
+
                                 </div>
                             </nav>
                         </div>
@@ -84,7 +99,7 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
                     <footer className="site-foot">
                         <div className="site-foot-nav container">
                             <div className="site-foot-nav-left">
-                                <Link to="/">{site.title}</Link> © 2021 &mdash; Published with <a className="site-foot-nav-item" href="https://ghost.org" target="_blank" rel="noopener noreferrer">Ghost</a>
+                                <Link to="/">{site.title}</Link> © 2021 &mdash; 
                             </div>
                             <div className="site-foot-nav-right">
                                 <Navigation data={site.navigation} navClass="site-foot-nav-item" />
@@ -95,7 +110,10 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
                 </div>
             </div>
 
+
         </>
+    
+    
     )
 }
 
@@ -134,22 +152,3 @@ const DefaultLayoutSettingsQuery = props => (
 )
 
 export default DefaultLayoutSettingsQuery
-
-class MyComponent extends React.Component {
-    render() {
-      return (
-        <ThemeToggler>
-          {({ theme, toggleTheme }) => (
-            <label>
-              <input
-                type="checkbox"
-                onChange={e => toggleTheme(e.target.checked ? 'dark' : 'light')}
-                checked={theme === 'dark'}
-              />{' '}
-              Dark mode
-            </label>
-          )}
-        </ThemeToggler>
-      )
-    }
-  }

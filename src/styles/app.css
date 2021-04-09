@@ -18,6 +18,65 @@ what's here to work the way you'd like it to.
 
 /* Variables
 /* ---------------------------------------------------------- */
+/* Dark Mode */
+:root.dark {
+    --color-background: black;
+    --color-nav: #222;
+    --color-text: #ddd;
+    --color-primary: #fbfafc;
+    /* ... more colors */
+  }
+  
+  html {
+    box-sizing: border-box;
+  }
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+  
+  body {
+    background: var(--color-background);
+    color: var(--color-text);
+    margin: 0;
+    font-family: var(--font-sans);
+  }
+  .home {
+    height: 100vh;
+    width: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+  .welcome {
+    font-size: 4rem;
+    font-family: var(--font-serif);
+  }
+  .content {
+    width: 80%;
+  }
+  .button {
+    background: var(--color-primary);
+    color: var(--color-text);
+    border: 0;
+    border-radius: 10px;
+  }
+  .button:focus {
+    outline: 0;
+  }
+  .mainnav {
+    position: fixed;
+    width: 100%;
+    background: var(--color-nav);
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+
 
 :root {
 
@@ -323,6 +382,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     -moz-font-feature-settings: "liga" on;
 }
+
 
 ::selection {
     text-shadow: none;
@@ -1159,4 +1219,26 @@ h6 {
   .kg-image-card.kg-width-wide + .kg-gallery-card,
   .kg-image-card.kg-width-wide + .kg-image-card.kg-width-wide {
     margin: -2.25em 0 3em;
+  }
+
+  /* global.css */
+
+body {
+    --bg: white;
+    --textNormal: #222;
+    --textTitle: #222;
+    --textLink: blue;
+    --hr: hsla(0, 0%, 0%, 0.2);
+  
+    background-color: var(--bg);
+  }
+  
+  body.dark {
+    -webkit-font-smoothing: antialiased;
+  
+    --bg: darkslategray;
+    --textNormal: rgba(255, 255, 255, 0.88);
+    --textTitle: white;
+    --textLink: yellow;
+    --hr: hsla(0, 0%, 100%, 0.2);
   }
